@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0f6dfa;">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">
+      <i class="bi bi-shop me-1"></i>ElectroStore
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarPrincipal" aria-controls="navbarPrincipal"
+      aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarPrincipal">
+      <div class="d-flex w-100 justify-content-between">
+
+        <ul class="nav nav-pills nav-fill">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/historia">
+              <i class="bi bi-clock-history me-1"></i>Nossa História
+            </a>
+          </li>
+          {{#if user}}
+            {{#if (eq user.perfil "admin")}}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/produtos/cadastrar">
+                <i class="bi bi-plus-circle me-1"></i>Cadastrar Produto
+              </a>
+            </li>
+            {{/if}}
+          {{/if}}
+        </ul>
+
+        <ul class="nav nav-pills nav-fill">
+          {{#if user}}
+            <li class="nav-item">
+              <span class="nav-link text-white disabled">
+                <i class="bi bi-person-circle me-1"></i>{{user.nome}}
+              </span>
+            </li>
+            <li class="nav-item">
+              <form action="/usuarios/logout" method="POST" class="m-0 p-0">
+                <button type="submit" class="btn btn-link nav-link text-white">
+                  <i class="bi bi-box-arrow-right me-1"></i>Sair
+                </button>
+              </form>
+            </li>
+          {{else}}
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/usuarios/login">
+                <i class="bi bi-person me-1"></i>Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="/usuarios/cadastrar">
+                <i class="bi bi-person-plus me-1"></i>Cadastro Usuário
+              </a>
+            </li>
+          {{/if}}
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</nav>
