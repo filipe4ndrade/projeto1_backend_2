@@ -1,4 +1,4 @@
-var { Produto, Categoria } = require('../model/modelos');
+var { Produto, Categoria, Usuario } = require('../model/modelos');
 
 var controllerProdutos = {
 
@@ -7,8 +7,10 @@ var controllerProdutos = {
       res.set('Cache-Control', 'private, max-age=5184000, must-revalidate');
 
       var categorias = await Categoria.findAll();
+      var usuarios = await Usuario.findAll();
       res.render('produto/cadastrar', {
-        categorias: categorias.map(function (c) { return c.toJSON(); })
+        categorias: categorias.map(function (c) { return c.toJSON(); }),
+        usuarios: usuarios.map(function (u) { return u.toJSON(); })
       });
     } catch (err) {
       res.status(500).send('Erro ao carregar formulário de cadastro: ' + err.message);
@@ -17,7 +19,7 @@ var controllerProdutos = {
 
   cadastrar: async function (req, res) {
     try {
-      var { nome, preco, descricao, quantidade, status, categoria_id } = req.body;
+      var { nome, preco, descricao, quantidade, status, categoria_id, usuario_id } = req.body;
       var erros = [];
 
       if (!nome || nome.trim() === '') {
@@ -42,12 +44,17 @@ var controllerProdutos = {
       if (!categoria_id || isNaN(parseInt(categoria_id)) || parseInt(categoria_id) <= 0) {
         erros.push('O campo categoria é obrigatório.');
       }
+      if (!usuario_id || isNaN(parseInt(usuario_id)) || parseInt(usuario_id) <= 0) {
+        erros.push('O campo usuário é obrigatório.');
+      }
 
       if (erros.length > 0) {
         var categorias = await Categoria.findAll();
+        var usuarios = await Usuario.findAll();
         return res.render('produto/cadastrar', {
           erros: erros,
           categorias: categorias.map(function (c) { return c.toJSON(); }),
+          usuarios: usuarios.map(function (u) { return u.toJSON(); }),
           valores: req.body
         });
       }
@@ -59,7 +66,7 @@ var controllerProdutos = {
         quantidade: parseInt(quantidade),
         status: status,
         categoria_id: parseInt(categoria_id),
-        usuario_id: req.user.id
+        usuario_id: parseInt(usuario_id)
       });
 
       res.redirect('/');

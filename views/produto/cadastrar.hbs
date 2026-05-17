@@ -61,6 +61,18 @@
     </div>
   </div>
 
+  <div class="mb-3">
+    <label for="usuario_id" class="form-label">Usuário Responsável</label>
+    <select class="form-select" id="usuario_id" name="usuario_id">
+      <option value="">Selecione...</option>
+      {{#each usuarios}}
+      <option value="{{this.id}}" {{#if (eq ../valores.usuario_id this.id)}}selected{{/if}}>
+        {{this.nome}} ({{this.email}})
+      </option>
+      {{/each}}
+    </select>
+  </div>
+
   <div class="mt-2">
     <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
   </div>
